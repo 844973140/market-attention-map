@@ -115,7 +115,7 @@ export function AttentionTreemap({ groups, selectedId, onSelect }: AttentionTree
         textStyle: { color: "#e7e3d8", fontSize: 12 },
         formatter: (params: TreemapParams) => {
           const data = params.data;
-          if (!data) return "";
+          if (!data || (data.kind !== "分类" && data.kind !== "市场")) return "";
           return [
             `<strong>${data.name}</strong>`,
             `市场关注度指数：${data.attentionScore}`,
@@ -148,7 +148,7 @@ export function AttentionTreemap({ groups, selectedId, onSelect }: AttentionTree
             overflow: "truncate",
             formatter: (params: TreemapParams) => {
               const data = params.data;
-              if (!data || data.kind === "分类") return "";
+              if (!data || data.kind !== "市场") return "";
               const direction = data.change >= 0 ? "rise" : "fall";
               return [
                 `{name|${data.name}}`,

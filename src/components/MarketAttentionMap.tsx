@@ -11,6 +11,7 @@ import type { MarketDataResponse, MarketSelection } from "@/lib/types";
 const initialItems = calculateAttention(demoMarketInputs);
 
 function timeLabel(value: string) {
+  if (!value) return "—";
   return new Intl.DateTimeFormat("zh-CN", {
     hour: "2-digit",
     minute: "2-digit",
@@ -20,7 +21,8 @@ function timeLabel(value: string) {
 
 export function MarketAttentionMap() {
   const [items, setItems] = useState(initialItems);
-  const [updatedAt, setUpdatedAt] = useState(new Date().toISOString());
+  // 保持服务端与浏览器的首屏文本一致，真实更新时间在数据请求完成后写入。
+  const [updatedAt, setUpdatedAt] = useState("");
   const [mode, setMode] = useState<MarketDataResponse["mode"]>("演示模式");
   const [warnings, setWarnings] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);

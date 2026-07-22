@@ -86,7 +86,8 @@ export function buildMarketGroups(items: MarketNode[]): MarketGroup[] {
   });
 }
 
-export function formatChange(value: number) {
+export function formatChange(value: number | undefined) {
+  if (typeof value !== "number" || !Number.isFinite(value)) return "—";
   if (value === 0) return "0.0%";
   return `${value > 0 ? "+" : ""}${value.toFixed(1)}%`;
 }
