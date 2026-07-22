@@ -61,9 +61,9 @@ export function MarketAttentionMap() {
   return (
     <main className="site-shell">
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="市场注意力地图首页">
-          <span className="brand-mark" aria-hidden="true">市</span>
-          <span>市场注意力地图</span>
+        <a className="brand" href="#top" aria-label="饼干市场热力图首页">
+          <span className="brand-mark" aria-hidden="true">饼</span>
+          <span>饼干市场热力图</span>
         </a>
         <nav aria-label="主导航">
           <a className="active" href="#overview">市场概览</a>
@@ -79,7 +79,7 @@ export function MarketAttentionMap() {
       <section className="hero" id="top">
         <div>
           <p className="eyebrow">全球市场 · 公开数据观察</p>
-          <h1>市场注意力地图</h1>
+          <h1>饼干市场热力图</h1>
           <p className="subtitle">观察全球资本关注正在集中于哪些市场。</p>
         </div>
         <div className="hero-note">
@@ -148,7 +148,7 @@ export function MarketAttentionMap() {
       </section>
 
       <footer>
-        <span>市场注意力地图 · 原型演示</span>
+        <span>饼干市场热力图 · 原型演示</span>
         <span>非资金流、非价格预测、非投资建议</span>
       </footer>
     </main>

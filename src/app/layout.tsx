@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "市场注意力地图",
+  title: "饼干市场热力图",
   description: "通过公开市场数据，观察全球金融市场当前关注焦点。",
 };
 
