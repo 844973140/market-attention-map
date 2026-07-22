@@ -1,6 +1,19 @@
-# Latch AGP Agent
+# Latch AGP Competition Agent
 
-一个简单、可解释、低成本的 Python Agent，用于参加 AGP（Agent Grand Prix）。它不追求单位时间内提出最多问题，而是在每次调用裁判前比较“预期信息增益 / USDC”，并在继续提问已经不划算时提交最可能的 checkpoint。
+这是一个为 AGP（Agent Grand Prix）比赛构建的自主参赛 Agent。仓库用于说明它的决策架构、策略能力和模拟表现，不将其定位为面向通用场景的 Agent 产品、SDK 或公共服务。
+
+它的目标是在有限 USDC 预算下找到隐藏 checkpoint：每次调用裁判前评估预期信息增益、成本和风险，在继续查询的价值低于成本时停止搜索并提交最可能的答案。
+
+## 核心功能
+
+- **信息价值搜索**：估算问题的信息增益、成功率提升和 `information_gain / cost`，优先执行单位预算价值更高的问题。
+- **比赛节奏控制**：根据 Early、Mid、Late 阶段动态切换探索、收敛和终局策略，避免过早耗尽预算。
+- **策略与权限分离**：Strategy 决定想做什么，Policy Engine 审核预算、重复问题、低价值动作和低置信度提交。
+- **自适应决策**：结合剩余预算、当前置信度、问题数量、候选规模和比赛进度选择 `EXPLORATION`、`OPTIMIZATION` 或 `FINISH`。
+- **比赛记忆**：记录历史问题表现与状态动作结果，用于调整信息增益阈值、提交阈值和预算分配。
+- **运行时适配**：通过独立 AGP Client 处理状态查询、Judge 提问、预算扣减和最终答案提交，便于替换为正式比赛接口。
+- **可追踪执行**：为每次允许或拒绝的动作记录时间、成本、决策和原因，保留完整审计链路。
+- **统计评估**：通过批量模拟、策略 benchmark 和 Tournament 排行榜比较胜率、平均成本、问题数量与预算效率。
 
 ## 策略
 
@@ -36,7 +49,7 @@ Agent 维护所有候选 checkpoint 的贝叶斯概率分布，并把裁判视�
 - `test_strategy_memory.py`：Memory 保存、读取和历史策略调整测试
 - `requirements.txt`：最小运行依赖
 
-## 快速运行
+## 本地验证
 
 需要 Python 3.11 或更高版本。
 
@@ -90,7 +103,7 @@ python agent.py --mode local --hidden checkpoint-hotel --budget 0.05
 
 `prior` 可以来自历史题目、公开线索或外部检索。缺省为 `1.0`，即均匀先验。候选必须唯一，且真实 checkpoint 必须在候选集合内；这是当前简单策略的边界。
 
-## 接入 AGP API
+## AGP Runtime 适配
 
 设置环境变量后运行远程模式：
 
@@ -113,7 +126,7 @@ macOS / Linux 请将 `set NAME=value` 替换为 `export NAME=value`。
 
 正式 AGP 协议发布后，只需调整 `HttpAGPJudgeClient`，策略层不需要修改。路径也可通过 `AGP_QUESTION_PATH` 和 `AGP_SUBMIT_PATH` 覆盖。
 
-## 接入 Latch
+## Latch 策略接口
 
 `PaymentGate` 是预留的支付边界。每次向裁判提问前先授权预计成本，响应后再按实际成本结算。设置以下变量会启用通用 HTTP 适配器：
 
@@ -279,7 +292,7 @@ Memory 从独立训练局中学习到 87% 提交阈值：只有相关状态至�
 
 ## Simulation Training
 
-Agent strategies can be evaluated through simulated AGP races before deployment.
+Agent strategies can be evaluated through simulated AGP races before entering a competition.
 
 `AGPSimulator` 会为每局比赛随机选择隐藏 checkpoint，通过带噪声的 Mock Judge 返回 `YES`、`NO` 或 `UNKNOWN`，同时模拟问题成本波动、信息收益、预算扣减和最终提交。它不使用机器学习模型，只通过可重复的统计模拟比较策略。
 
@@ -338,7 +351,7 @@ python tournament.py --episodes 10000 --output tournament_report.json
 
 The leaderboard is ranked by win rate, then budget efficiency, then lower average cost. `tournament_report.json` records the complete parameters, strategy versions, generation time, wins, win rate, average cost, average questions, and budget efficiency for reproducibility.
 
-Generate a GitHub-ready Markdown report for the current agent:
+Export an auditable Markdown performance report for the competition agent:
 
 ```bash
 python export_report.py \
@@ -379,6 +392,6 @@ python -m unittest discover -v
 
 比赛前应按真实 AGP/Latch 计费更新单价。Agent 会用 `max_tokens` 做保守的提问前估价，并优先保留最终提交预算；如果服务端返回 `cost_usdc`，账本会以实际值为准。
 
-## 部署
+## 参赛运行环境
 
-仓库不依赖数据库或复杂框架，可直接推送到 GitHub，并在任意支持 Python 3.11+ 的容器或虚拟机中运行。敏感密钥只通过环境变量注入，不要提交到 Git。
+Agent 不依赖数据库或复杂框架，可在支持 Python 3.11+ 的比赛容器或虚拟机中运行。正式参赛时通过环境变量注入 AGP、Latch 和会话配置；敏感密钥不进入代码、日志或 Git 历史。
