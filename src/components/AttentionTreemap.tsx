@@ -98,7 +98,8 @@ export function AttentionTreemap({ groups, selectedId, onSelect }: AttentionTree
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const chart = echarts.init(containerRef.current, undefined, { renderer: "canvas" });
+    // 节点数量很少，SVG 可避免部分浏览器/显卡组合下 Canvas 渲染进程被重置。
+    const chart = echarts.init(containerRef.current, undefined, { renderer: "svg" });
     chartRef.current = chart;
 
     chart.setOption({
