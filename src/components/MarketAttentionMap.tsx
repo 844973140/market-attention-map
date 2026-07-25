@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AttentionTreemap } from "@/components/AttentionTreemap";
 import { DetailPanel } from "@/components/DetailPanel";
+import { IntelligenceStudio } from "@/components/IntelligenceStudio";
 import { demoMarketInputs } from "@/data/demo";
 import { buildMarketGroups, calculateAttention } from "@/lib/attention";
 import type { MarketDataResponse, MarketSelection } from "@/lib/types";
@@ -126,6 +127,8 @@ export function MarketAttentionMap() {
         </div>
         <DetailPanel selection={selection} />
       </section>
+
+      <IntelligenceStudio selection={selection} />
 
       {warnings.length ? (
         <div className="data-warning" role="status">
