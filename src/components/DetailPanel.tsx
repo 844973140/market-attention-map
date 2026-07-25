@@ -2,6 +2,7 @@
 
 import { formatChange, formatCompactCurrency } from "@/lib/attention";
 import type { MarketSelection } from "@/lib/types";
+import { AttentionComposition } from "@/components/AttentionComposition";
 
 interface DetailPanelProps {
   selection: MarketSelection;
@@ -77,26 +78,17 @@ export function DetailPanel({ selection }: DetailPanelProps) {
           市场关注度指数由成交量变化 50%、价格变化 30%、新闻热度 20% 加权，并在全市场样本中归一化至
           0–100。
         </p>
-        {isMarket ? (
-          <div className="component-bars">
-            {[
-              ["成交量", selection.components.volume, "50%"],
-              ["价格", selection.components.price, "30%"],
-              ["新闻", selection.components.news, "20%"],
-            ].map(([label, value, weight]) => (
-              <div className="component-row" key={label}>
-                <span>{label}</span>
-                <div><i style={{ width: `${value}%` }} /></div>
-                <b>{weight}</b>
-              </div>
-            ))}
-          </div>
-        ) : null}
+        {isMarket ? <AttentionComposition items={[
+          { label: "成交量", value: selection.components.volume, weight: "50%" },
+          { label: "价格", value: selection.components.price, weight: "30%" },
+          { label: "新闻", value: selection.components.news, weight: "20%" },
+        ]} /> : null}
       </section>
 
       <section className="detail-section interpretation">
         <h3>智能解读</h3>
         <p>{selection.description}</p>
+        <div className="analysis-roadmap"><span>后续将接入</span><p>新闻聚合 · 情绪信号 · 事件比对</p></div>
         <small>此处仅解释关注度构成，不代表趋势判断或买卖建议。</small>
       </section>
     </aside>

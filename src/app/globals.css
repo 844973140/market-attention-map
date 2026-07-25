@@ -454,35 +454,17 @@ a {
   color: #c0a66e !important;
 }
 
-.component-bars {
-  margin-top: 17px;
-}
-
-.component-row {
-  display: grid;
-  grid-template-columns: 38px 1fr 28px;
-  align-items: center;
-  gap: 9px;
-  margin-top: 9px;
-  color: var(--faint);
-  font-size: 9px;
-}
-
-.component-row > div {
-  height: 3px;
-  background: #282c28;
-}
-
-.component-row i {
-  display: block;
-  height: 100%;
-  background: var(--gold-soft);
-}
-
-.component-row b {
-  font-weight: 500;
-  text-align: right;
-}
+.attention-composition { margin-top: 18px; padding: 15px 14px 8px; background: #f0efeb; color: #1c1c1a; border-radius: 18px; }
+.composition-head { display: flex; justify-content: space-between; gap: 12px; font-size: 10px; font-weight: 700; }
+.composition-head small { color: #6a6963; font-size: 9px; font-weight: 500; }
+.attention-composition svg { display: block; width: 100%; margin-top: 5px; overflow: visible; }
+.attention-composition text { font-family: var(--font-sans); }
+.tick-row { opacity: 0; animation: tick-row-reveal 480ms cubic-bezier(.2,.7,.3,1) forwards; }
+.tick-label { fill: #6a6963; font-size: 9px; font-weight: 700; letter-spacing: .08em; }
+.tick-baseline { stroke: #deddd6; stroke-width: .8; }.tick-mark { stroke: #1c1c1a; stroke-width: 1.1; }.tick-dot { fill: #c6c5bf; }
+.tick-value { fill: #1c1c1a; font-size: 12px; font-weight: 800; }.tick-weight { fill: #6a6963; font-size: 9px; font-weight: 700; }
+.tick-caption { fill: #8f8e88; font-size: 7px; font-weight: 600; letter-spacing: .08em; }
+@keyframes tick-row-reveal { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
 .interpretation small {
   display: block;
@@ -491,6 +473,10 @@ a {
   font-size: 9px;
   line-height: 1.6;
 }
+
+.analysis-roadmap { margin-top: 15px; padding: 11px 0 0; border-top: 1px solid var(--line); }
+.analysis-roadmap span { color: var(--faint); font-size: 9px; }
+.analysis-roadmap p { margin-top: 5px; color: #c4c1b6; font-size: 10px; letter-spacing: .04em; }
 
 .data-warning {
   display: flex;
